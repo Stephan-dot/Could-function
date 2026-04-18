@@ -163,7 +163,7 @@ export default async ({ req, res, log, error }) => {
       `userId = "${userId}"`
     ]);
     
-    if(commerces.length > 0) {
+    if(commerces.documents && commerces.documents.length > 0) {
       for (const commerce of commerces.documents) {
       log(`Eliminando comercio: ${commerce.$id}`);
       // Eliminar productos del comercio
