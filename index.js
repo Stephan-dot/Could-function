@@ -151,7 +151,7 @@ export default async ({ req, res, log, error }) => {
   };
 
   const handleUsersDelete = async (userId) => {
-    console.log(`Heeeeeeyy: ${userId}`);
+    log(`🗑️ Eliminando usuario: ${userId}`);
     if (!userId) {
       throw new Error('userId es requerido');
     }
