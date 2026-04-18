@@ -162,7 +162,7 @@ export default async ({ req, res, log, error }) => {
     const commerces = await databases.listDocuments(DATABASE_ID, COMMERCE_COLLECTION_ID, [
       `userId = "${userId}"`
     ]);
-    
+    console.log("COMERCIOS ENCONTRADOS", commerces);
     if(commerces.documents && commerces.documents.length > 0) {
       for (const commerce of commerces.documents) {
       log(`Eliminando comercio: ${commerce.$id}`);
