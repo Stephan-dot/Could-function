@@ -151,7 +151,8 @@ export default async ({ req, res, log, error }) => {
   };
 
   const handleUsersDelete = async (userId) => {
-    log(`🗑️ Eliminando usuario: ${userId}`);
+    try {
+      log(`🗑️ Eliminando usuario: ${userId}`);
     if (!userId) {
       throw new Error('userId es requerido');
     }
@@ -184,6 +185,10 @@ export default async ({ req, res, log, error }) => {
       success: true,
       message: 'Usuario y todos sus datos eliminados exitosamente'
     };
+    } catch (error) {
+      log(`❌ Error al eliminar usuario: ${error.message}`);
+      throw new Error('Error al eliminar usuario');
+    }
   };
 
   // ==================== MANEJADORES DE COMERCIOS ====================
