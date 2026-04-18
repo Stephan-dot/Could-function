@@ -151,8 +151,6 @@ export default async ({ req, res, log, error }) => {
   };
 
   const handleUsersDelete = async (userId) => {
-    try {
-      log(`🗑️ Eliminando usuario: ${userId}`);
     if (!userId) {
       throw new Error('userId es requerido');
     }
@@ -163,20 +161,21 @@ export default async ({ req, res, log, error }) => {
     const commerces = await databases.listDocuments(DATABASE_ID, COMMERCE_COLLECTION_ID, [
       `userId = "${userId}"`
     ]);
-    console.log("COMERCIOS ENCONTRADOS", commerces);
+    log(`Comercios encontrados: ${commerces.documents ? commerces.documents.length : 0}`);
+    
     if(commerces.documents && commerces.documents.length > 0) {
       for (const commerce of commerces.documents) {
-      log(`Eliminando comercio: ${commerce.$id}`);
-      // Eliminar productos del comercio
-      const products = await databases.listDocuments(DATABASE_ID, PRODUCTS_COLLECTION_ID, [
-        `commerceId = "${commerce.$id}"`
-      ]);
-      for (const product of products.documents) {
-        log(`Eliminando producto: ${product.$id}`);
-        await databases.deleteDocument(DATABASE_ID, PRODUCTS_COLLECTION_ID, product.$id);
+        log(`Eliminando comercio: ${commerce.$id}`);
+        // Eliminar productos del comercio
+        const products = await databases.listDocuments(DATABASE_ID, PRODUCTS_COLLECTION_ID, [
+          `commerceId = "${commerce.$id}"`
+        ]);
+        for (const product of products.documents) {
+          log(`Eliminando producto: ${product.$id}`);
+          await databases.deleteDocument(DATABASE_ID, PRODUCTS_COLLECTION_ID, product.$id);
+        }
+        await databases.deleteDocument(DATABASE_ID, COMMERCE_COLLECTION_ID, commerce.$id);
       }
-      await databases.deleteDocument(DATABASE_ID, COMMERCE_COLLECTION_ID, commerce.$id);
-    }
     }
     
     await users.delete(userId);
@@ -185,12 +184,6 @@ export default async ({ req, res, log, error }) => {
       success: true,
       message: 'Usuario y todos sus datos eliminados exitosamente'
     };
-    } catch (error) {
-      log(`❌ Error al eliminar usuario: ${error.message}`);
-      error(`Stack trace: ${error.stack}`);
-      error(`Stack trace: ${error.message}`);
-      throw new Error('Error al eliminar usuario');
-    }
   };
 
   // ==================== MANEJADORES DE COMERCIOS ====================
