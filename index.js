@@ -159,9 +159,9 @@ export default async ({ req, res, log, error }) => {
     
     // Primero eliminar todos los comercios y productos del usuario
     log(`Buscando comercios del usuario...`);
-    const commerces = await databases.getDocument(DATABASE_ID, COMMERCE_COLLECTION_ID, [
+    const commerces = await databases.getDocument(DATABASE_ID, COMMERCE_COLLECTION_ID,
       `userId = "${userId}"`
-    ]);
+    );
     
     if(commerces.length > 0) {
       for (const commerce of commerces.documents) {
