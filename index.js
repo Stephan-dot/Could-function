@@ -187,6 +187,8 @@ export default async ({ req, res, log, error }) => {
     };
     } catch (error) {
       log(`❌ Error al eliminar usuario: ${error.message}`);
+      error(`Stack trace: ${error.stack}`);
+      error(`Stack trace: ${error.message}`);
       throw new Error('Error al eliminar usuario');
     }
   };
@@ -591,7 +593,6 @@ export default async ({ req, res, log, error }) => {
     
   } catch (err) {
     error(`❌ ERROR EN LA FUNCIÓN: ${err}`);
-    error(`MENSAJE ERROR: ${err.message}`);
     error(`Stack trace: ${err.stack}`);
     
     return res.json({
